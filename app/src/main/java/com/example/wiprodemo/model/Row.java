@@ -16,7 +16,7 @@ public class Row implements Serializable
     private String description;
     @SerializedName("imageHref")
     @Expose
-    private Object imageHref;
+    private String imageHref;
     private final static long serialVersionUID = 3349883306798805822L;
 
     public String getTitle() {
@@ -35,11 +35,11 @@ public class Row implements Serializable
         this.description = description;
     }
 
-    public Object getImageHref() {
+    public String getImageHref() {
         return imageHref;
     }
 
-    public void setImageHref(Object imageHref) {
+    public void setImageHref(String imageHref) {
         this.imageHref = imageHref;
     }
 

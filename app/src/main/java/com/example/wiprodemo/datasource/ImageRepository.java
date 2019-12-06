@@ -49,7 +49,7 @@ public class ImageRepository implements ImageDataSource {
                         if (imResponse.getRows() != null && imResponse.getRows().size() > 0) {
                             imageList.addAll(imResponse.getRows());
                         }
-                        callBackListener.onLoaded(imageList);
+                        callBackListener.onLoaded(imResponse);
                     }
 
                     @Override

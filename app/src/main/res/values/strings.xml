@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">WiproDemo</string>
+
+
+    <string name="connection_problem">Please check your internet connectivity and try again</string>
+    <string name="network_problem">Please check your internet connectivity and try again</string>
+    <string name="no_result">No Result!</string>
+
+    <!--Internet-->
+    <string name="check_internet">Please check your internet connectivity and try again</string>
+    <string name="no_connection">No Connection</string>
 </resources>
