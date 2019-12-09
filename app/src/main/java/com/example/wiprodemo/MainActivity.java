@@ -13,11 +13,16 @@ import com.example.wiprodemo.mainactivitymodule.ImageListAdapter;
 import com.example.wiprodemo.mainactivitymodule.MainContract;
 import com.example.wiprodemo.mainactivitymodule.MainPresenter;
 import com.example.wiprodemo.model.ImageDataResponse;
+import com.example.wiprodemo.model.Row;
+
+import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import io.reactivex.Flowable;
+import io.reactivex.functions.Predicate;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
 
@@ -49,14 +54,20 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void showImages(ImageDataResponse imageDataResponse) {
+        final List<Row> rows = Flowable.fromIterable(imageDataResponse.getRows()).filter(new Predicate<Row>() {
+            @Override
+            public boolean test(Row row) throws Exception {
+                return (row.getTitle() != null && !row.getTitle().equalsIgnoreCase(""));
+            }
+        }).toList().blockingGet();
         getSupportActionBar().setTitle(imageDataResponse.getTitle());
         if (imageListAdapter == null) {
-            imageListAdapter = new ImageListAdapter(imageDataResponse.getRows());
+            imageListAdapter = new ImageListAdapter(rows);
             LinearLayoutManager manager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(manager);
             recyclerView.setAdapter(imageListAdapter);
         } else {
-            imageListAdapter.setItemModelList(imageDataResponse.getRows());
+            imageListAdapter.setItemModelList(rows);
         }
 
     }

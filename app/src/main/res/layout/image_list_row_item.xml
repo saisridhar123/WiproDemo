@@ -29,7 +29,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/x_small_margin"
+            android:layout_marginTop="@dimen/xx_small_margin"
             android:layout_marginBottom="@dimen/xx_small_margin"
             android:weightSum="1">
 
