@@ -2,9 +2,11 @@ package com.example.wiprodemo;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.wiprodemo.Util.AppNetworkStatus;
+import com.example.wiprodemo.Util.ConnectionStateMonitor;
 import com.example.wiprodemo.datasource.ImageRemoteDataSource;
 import com.example.wiprodemo.datasource.ImageRepository;
 import com.example.wiprodemo.mainactivitymodule.ImageListAdapter;
@@ -23,22 +25,21 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private MainPresenter presenter;
     private RecyclerView recyclerView;
     private ImageListAdapter imageListAdapter;
-    private ProgressDialog dialog;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        dialog = new ProgressDialog(this);
         presenter = new MainPresenter(this, ImageRepository.getInstance(ImageRemoteDataSource.getInstance()));
         presenter.start();
-        presenter.getImages(new AppNetworkStatus(this));
+        presenter.getImages(new ConnectionStateMonitor(this),this,true);
     }
 
     @Override
     public void showLoadingIndicator(boolean active) {
-        if (active) dialog.show();
-        else dialog.dismiss();
+        if (active) progressBar.setVisibility(View.VISIBLE);
+        else progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -76,10 +77,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void setUpUI() {
         swipeContainer = findViewById(R.id.swipeContainer);
         recyclerView = findViewById(R.id.rvItems);
+        progressBar = findViewById(R.id.progress_bar);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                presenter.getImages(new AppNetworkStatus(MainActivity.this));
+                presenter.getImages(new ConnectionStateMonitor(MainActivity.this),MainActivity.this,false);
                 swipeContainer.setRefreshing(false);
             }
         });

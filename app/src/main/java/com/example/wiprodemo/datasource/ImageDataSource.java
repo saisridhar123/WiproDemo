@@ -1,11 +1,12 @@
 package com.example.wiprodemo.datasource;
 
 
-import com.example.wiprodemo.Util.NetworkStatus;
+import com.example.wiprodemo.MainActivity;
+import com.example.wiprodemo.Util.ConnectionStateMonitor;
 
 public interface ImageDataSource {
 
-    void getImages(NetworkStatus networkStats, LoadCallBackListener callBackListener);
+    void getImages(ConnectionStateMonitor networkStats, LoadCallBackListener callBackListener, MainActivity mainActivity);
 
 
     interface LoadCallBackListener {

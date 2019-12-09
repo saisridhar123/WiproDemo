@@ -2,8 +2,9 @@ package com.example.wiprodemo.mainactivitymodule;
 
 import android.content.Context;
 
+import com.example.wiprodemo.MainActivity;
 import com.example.wiprodemo.R;
-import com.example.wiprodemo.Util.NetworkStatus;
+import com.example.wiprodemo.Util.ConnectionStateMonitor;
 import com.example.wiprodemo.datasource.ImageRepository;
 import com.example.wiprodemo.model.ImageDataResponse;
 
@@ -27,12 +28,15 @@ public class MainPresenterTest {
     ImageDataResponse imageDataResponse;
 
     @Mock
-    NetworkStatus networkStatus;
+    ConnectionStateMonitor connectionStateMonitor;
     @Mock
     private ImageRepository imageRepository;
 
     @Mock
     private MainContract.View mainView;
+
+    @Mock
+    MainActivity mainActivity;
 
     @Mock
     private Context context;
@@ -69,10 +73,10 @@ public class MainPresenterTest {
     @Test
     public void showImageList_whenApiGotSuccess() {
         // make call
-        mainPresenter.getImages(networkStatus);
+        mainPresenter.getImages(connectionStateMonitor,mainActivity,true);
 
         // Callback is captured and invoked with stubbed cards
-        verify(imageRepository).getImages(eq(networkStatus),loadPostsCallbackCaptor.capture());
+        verify(imageRepository).getImages(eq(connectionStateMonitor),loadPostsCallbackCaptor.capture(),eq(mainActivity) );
         loadPostsCallbackCaptor.getValue().onLoaded(imageDataResponse);
 
         // Then progress indicator is hidden posts are shown in UI
@@ -86,9 +90,10 @@ public class MainPresenterTest {
     public void showNetworkError_whenApiGotFailed() {
 
         // make call
-        mainPresenter.getImages(networkStatus);
+        mainPresenter.getImages(connectionStateMonitor,mainActivity,true);
+
         // Callback is captured and invoked with stubbed cards
-        verify(imageRepository).getImages(eq(networkStatus),loadPostsCallbackCaptor.capture());
+        verify(imageRepository).getImages(eq(connectionStateMonitor),loadPostsCallbackCaptor.capture(),eq(mainActivity) );
         loadPostsCallbackCaptor.getValue().onError(100);
 
         // Then progress indicator is hidden posts are shown in UI
@@ -104,9 +109,10 @@ public class MainPresenterTest {
 
         when(mainView.getErrorString(R.string.connection_problem)).thenReturn("connection problem");
         // make call
-        mainPresenter.getImages(networkStatus);
+        mainPresenter.getImages(connectionStateMonitor,mainActivity,true);
+
         // Callback is captured and invoked with stubbed cards
-        verify(imageRepository).getImages(eq(networkStatus),loadPostsCallbackCaptor.capture());
+        verify(imageRepository).getImages(eq(connectionStateMonitor),loadPostsCallbackCaptor.capture(),eq(mainActivity) );
         loadPostsCallbackCaptor.getValue().onError(200);
 
         // Then progress indicator is hidden posts are shown in UI
@@ -120,9 +126,10 @@ public class MainPresenterTest {
 
         when(mainView.getErrorString(R.string.no_result)).thenReturn("no result");
         // make call
-        mainPresenter.getImages(networkStatus);
+        mainPresenter.getImages(connectionStateMonitor,mainActivity,true);
+
         // Callback is captured and invoked with stubbed cards
-        verify(imageRepository).getImages(eq(networkStatus),loadPostsCallbackCaptor.capture());
+        verify(imageRepository).getImages(eq(connectionStateMonitor),loadPostsCallbackCaptor.capture(),eq(mainActivity) );
         loadPostsCallbackCaptor.getValue().onError(300);
 
         // Then progress indicator is hidden posts are shown in UI

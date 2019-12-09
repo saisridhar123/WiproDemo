@@ -1,8 +1,9 @@
 package com.example.wiprodemo.datasource;
 
 
+import com.example.wiprodemo.MainActivity;
+import com.example.wiprodemo.Util.ConnectionStateMonitor;
 import com.example.wiprodemo.Util.ErrorCode;
-import com.example.wiprodemo.Util.NetworkStatus;
 import com.example.wiprodemo.model.ImageDataResponse;
 import com.example.wiprodemo.network.ImageServices;
 import com.example.wiprodemo.network.RetrofitClient;
@@ -13,22 +14,22 @@ import retrofit2.Response;
 
 public class ImageRemoteDataSource implements ImageDataSource {
 
-    private static ImageRemoteDataSource ourInstance;
-    private ImageServices apiService;
+    private static ImageRemoteDataSource imageRemoteDataSource;
+
 
     private ImageRemoteDataSource() {
     }
 
-    public static ImageRemoteDataSource getInstance() {
-        if (ourInstance == null) {
-            ourInstance = new ImageRemoteDataSource();
+    public synchronized static ImageRemoteDataSource getInstance() {
+        if (imageRemoteDataSource == null) {
+            imageRemoteDataSource = new ImageRemoteDataSource();
         }
-        return ourInstance;
+        return imageRemoteDataSource;
     }
 
     @Override
-    public void getImages(NetworkStatus networkStats, final LoadCallBackListener callBackListener) {
-        apiService = RetrofitClient.getClient().create(ImageServices.class);
+    public  void getImages(ConnectionStateMonitor networkStats, final LoadCallBackListener callBackListener, MainActivity mainActivity) {
+       final ImageServices apiService = RetrofitClient.getClient().create(ImageServices.class);
 
         Call<ImageDataResponse> call = apiService.getAllImages();
         call.enqueue(new Callback<ImageDataResponse>() {

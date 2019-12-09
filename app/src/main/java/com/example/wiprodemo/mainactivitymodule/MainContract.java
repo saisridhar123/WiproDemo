@@ -3,7 +3,8 @@ package com.example.wiprodemo.mainactivitymodule;
 
 import com.example.wiprodemo.BasePresenter;
 import com.example.wiprodemo.BaseView;
-import com.example.wiprodemo.Util.NetworkStatus;
+import com.example.wiprodemo.MainActivity;
+import com.example.wiprodemo.Util.ConnectionStateMonitor;
 import com.example.wiprodemo.model.ImageDataResponse;
 
 public interface MainContract {
@@ -60,7 +61,7 @@ public interface MainContract {
          *
          * @param networkStatus network interface
          */
-        void getImages(NetworkStatus networkStatus);
+        void getImages(ConnectionStateMonitor networkStatus, MainActivity mainActivity, boolean isPullToRefresh);
 
         /**
          * gets filtered error

@@ -1,9 +1,10 @@
 package com.example.wiprodemo.mainactivitymodule;
 
 
+import com.example.wiprodemo.MainActivity;
 import com.example.wiprodemo.R;
+import com.example.wiprodemo.Util.ConnectionStateMonitor;
 import com.example.wiprodemo.Util.ErrorCode;
-import com.example.wiprodemo.Util.NetworkStatus;
 import com.example.wiprodemo.datasource.ImageDataSource;
 import com.example.wiprodemo.datasource.ImageRepository;
 import com.example.wiprodemo.model.ImageDataResponse;
@@ -20,8 +21,8 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void getImages(NetworkStatus networkStatus) {
-        view.showLoadingIndicator(true);
+    public void getImages(ConnectionStateMonitor networkStatus, MainActivity mainActivity, boolean isPullToRefresh) {
+        view.showLoadingIndicator(isPullToRefresh);
         repository.getImages(networkStatus, new ImageDataSource.LoadCallBackListener() {
             @Override
             public void onLoaded(Object response) {
@@ -38,7 +39,7 @@ public class MainPresenter implements MainContract.Presenter {
                     view.showError(filterError(error));
                 }
             }
-        });
+        }, mainActivity);
     }
 
     @Override

@@ -9,7 +9,7 @@
     android:clipToPadding="false"
     android:divider="@android:color/transparent"
     android:elevation="@dimen/x_small_margin"
-    app:cardBackgroundColor="@color/background"
+    app:cardBackgroundColor="@color/colorBackground"
     card_view:cardElevation="@dimen/x_small_margin"
     card_view:cardPreventCornerOverlap="false">
 
@@ -24,7 +24,8 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            style="@style/title_text_style"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,7 +37,8 @@
                 android:id="@+id/title_description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.7" />
+                android:layout_weight="0.7"
+                style="@style/description_text_style"/>
 
             <ImageView
                 android:id="@+id/imageView"
